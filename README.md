@@ -1,5 +1,5 @@
 # speechT
-An opensource speech-to-text software written in tensorflow.
+An opensource speech-to-text software written in tensorflow. This repository is a fork from [timediv's speechT](https://github.com/timediv/speechT) as a trial to adapt it to phonetic instead of orthographic input. Therefore the following lines of README might be outdated.
 
 Python 3 is required.
 
