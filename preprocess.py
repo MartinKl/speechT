@@ -231,7 +231,7 @@ class SpeechCorpusReader:
       os.makedirs(out_directory)
 
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
-    with open('inspect.txt') as f:
+    with open('inspect.txt', 'w') as f:
         f.write(os.linesep.join(audio_files))
     raise NotImplementedError
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
