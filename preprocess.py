@@ -204,7 +204,7 @@ class SpeechCorpusReader:
     if feature_type == calc_power_spectrogram or feature_type == 'power':
       preprocess_directory += '-power'
 
-    directory = self._data_directory + '/' + preprocess_directory + '/' + sub_directory
+    directory = os.path.join(self._data_directory, preprocess_directory, sub_directory)
 
     return directory
 
