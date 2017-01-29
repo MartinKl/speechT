@@ -78,7 +78,7 @@ class SpeechCorpusProvider:
     Returns: path to downloaded file
     """
 
-    raise NotImplementedError
+    raise NotImplementedError(remote_file_name)
 
   @staticmethod
   def _extract_from_to(tar_file_name, source, target_directory):
