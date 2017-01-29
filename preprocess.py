@@ -196,7 +196,7 @@ class SpeechCorpusReader:
     Returns: generator with (audio_id: string, audio_fragments: ndarray, transcript: list(int)) tuples
 
     """
-    audio_files = list(iglob_recursive(self._data_directory + '/' + directory, '*.flac'))
+    audio_files = list(filter(lambda a: 'LibriSpeech/' in a, iglob_recursive(self._data_directory + '/' + directory, '*.flac')))
 
     transcript_dict = self._transcript_dict
 
@@ -228,7 +228,7 @@ class SpeechCorpusReader:
     if not os.path.exists(out_directory):
       os.makedirs(out_directory)
 
-    audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
+    audio_files = list(filter(lambda a: 'LibriSpeech' in a, iglob_recursive(os.path.join(self._data_directory, directory), '*.flac')))
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
 
