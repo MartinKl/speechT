@@ -144,6 +144,3 @@ class SpeechCorpusProvider:
     else:
       data_sets = SpeechCorpusProvider.DATA_SETS
 
-    if not self._is_ready(data_sets):
-      self._download(data_sets)
-      self._extract(data_sets)
