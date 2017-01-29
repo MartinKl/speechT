@@ -217,7 +217,7 @@ class SpeechCorpusReader:
       preprocess_fnc: The preprocessing function to use
 
     """
-
+    print('Called with', directory)
     out_directory = self._get_directory(preprocess_fnc, directory)
 
     if not os.path.exists(out_directory):
