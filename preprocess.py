@@ -124,7 +124,7 @@ class SpeechCorpusReader:
     return self._transcript_dict_cache
 
   @staticmethod
-  def _get_transcript_entries(transcript_dir):
+  def _get_transcript_entries(transcript_directory):
     """
     Iterate over all transcript lines and yield splitted entries
 
@@ -134,10 +134,7 @@ class SpeechCorpusReader:
     Returns: Iterator for all entries in the form (id, sentence)
 
     """
-    transcript_directory = SpeechCorpusReader._fix_transcript_dir(transcript_dir)
-    if not os.path.exists(transcript_dir):
-        raise FileNotFoundError
-    transcript_files = iglob_recursive(transcript_directory, '*.trans.txt')
+    transcript_files = filter(lambda fn: "LibriSpeechPhones" in fn, iglob_recursive(transcript_directory, '*.trans.txt'))
     for transcript_file in transcript_files:
       with open(transcript_file, 'r') as f:
         for line in f:
