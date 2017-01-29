@@ -223,8 +223,7 @@ class SpeechCorpusReader:
     if not os.path.exists(out_directory):
       os.makedirs(out_directory)
 
-    print('searching for audio in', self._data_directory + '/' + directory)
-    audio_files = list(iglob_recursive(self._data_directory + '/' + directory, '*.flac'))
+    audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
     print('audio files:', audio_files)
     with Pool(processes=multiprocessing.cpu_count()) as pool:
 
