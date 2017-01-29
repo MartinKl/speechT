@@ -12,6 +12,7 @@ import random
 import vocabulary
 import corpus
 import argparse
+import time
 
 def normalize(values):
   """
@@ -163,9 +164,12 @@ class SpeechCorpusReader:
 
   @classmethod
   def _transform_and_store_sample(cls, audio_file, preprocess_fnc, transcript, out_directory):
-    audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
-    i = 1 / 0
-    np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
+    try:
+        audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
+        np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
+    except Exception as err:
+        with open(os.path.join('log', str(time)), 'w') as f:
+            f.write(err.with_traceback())
 
 
 
