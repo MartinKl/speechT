@@ -99,7 +99,7 @@ def iglob_recursive(directory, file_pattern):
   Returns: iterator for found files
 
   """
-  for root, dir_names, file_names in os.walk(directory):
+  for root, dir_names, file_names in os.walk(directory, followlinks=True):
     files = filter(lambda fn: not os.path.islink(os.path.join(root, fn)), fnmatch.filter(file_names, file_pattern))
     for filename in files:
       yield os.path.join(root, filename)
@@ -199,7 +199,7 @@ class SpeechCorpusReader:
 
     """
     audio_files = list(iglob_recursive(self._data_directory + '/' + directory, '*.flac'))
-
+    print('audio files for transcripts: ', len(audio_files))
     transcript_dict = self._transcript_dict
 
     for audio_file in audio_files:
