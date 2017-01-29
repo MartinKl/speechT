@@ -1,18 +1,3 @@
-# Copyright 2016 Louis Kirsch. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-from functools import partial
 from multiprocessing.pool import Pool
 
 import librosa
@@ -27,7 +12,6 @@ import random
 import vocabulary
 import corpus
 import argparse
-
 
 def normalize(values):
   """
@@ -148,11 +132,6 @@ class SpeechCorpusReader:
           splitted = line.split(' ', 1)
           yield splitted
 
-  @staticmethod
-  def _fix_transcript_dir(directory):
-      print('fixing', directory)
-      return directory.replace('LibriSpeech', 'export/LibriSpeechPhones')
-
   def _build_transcript(self):
     """
     Builds a transcript from transcript files, mapping from audio-id to a list of vocabulary ids
@@ -187,24 +166,7 @@ class SpeechCorpusReader:
     audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
     np.savez(out_directory + '/' + audio_id, audio_fragments=audio_fragments, transcript=transcript)
 
-  def generate_samples(self, directory, preprocess_fnc):
-    """
-    Generates samples from the given directory
 
-    Args:
-      directory: the sub-directory of the initial data directory to sample from
-      preprocess_fnc: the preprocessing function to use
-
-    Returns: generator with (audio_id: string, audio_fragments: ndarray, transcript: list(int)) tuples
-
-    """
-    audio_files = list(iglob_recursive(self._data_directory + '/' + directory, '*.flac'))
-    print('audio files for transcripts: ', len(audio_files))
-    transcript_dict = self._transcript_dict
-
-    for audio_file in audio_files:
-      audio_id, audio_fragments = self._transform_sample(audio_file, preprocess_fnc)
-      yield audio_id, audio_fragments, transcript_dict[audio_id]
 
   def _get_directory(self, feature_type, sub_directory):
     preprocess_directory = 'preprocessed'
@@ -230,6 +192,8 @@ class SpeechCorpusReader:
     if not os.path.exists(out_directory):
       os.makedirs(out_directory)
 
+    print('scanning', os.path.join(self._data_directory, directory))
+
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
@@ -244,44 +208,6 @@ class SpeechCorpusReader:
 
       pool.close()
       pool.join()
-
-  def load_samples(self, directory, max_size=False, loop_infinitely=False, limit_count=0, feature_type='mfcc'):
-    """
-    Load the preprocessed samples from `directory` and return an iterator
-
-    Args:
-      directory: the sub-directory to use
-      max_size: the maximum audio time length, all others are discarded (default: False)
-      loop_infinitely: after one pass, shuffle and pass again (default: False)
-      limit_count: maximum number of samples to use, 0 equals unlimited (default: 0)
-      feature_type: features to use 'mfcc' or 'power'
-
-    Returns: iterator for samples (audio_data, transcript)
-
-    """
-
-    load_directory = self._get_directory(feature_type, directory)
-
-    if not os.path.exists(load_directory):
-      raise ValueError('Directory {} does not exist'.format(load_directory))
-
-    files = list(iglob_recursive(load_directory, '*.npz'))
-    random.shuffle(files)
-
-    if limit_count:
-      files = files[:limit_count]
-
-    while True:
-      for file in files:
-        with np.load(file) as data:
-          audio_length = data['audio_fragments'].shape[0]
-          if not max_size or audio_length <= max_size:
-            yield data['audio_fragments'], data['transcript']
-          else:
-            logging.warning('Audio snippet too long: {}'.format(audio_length))
-      if not loop_infinitely:
-        break
-      random.shuffle(files)
 
 
 if __name__ == '__main__':
