@@ -156,9 +156,9 @@ class SpeechCorpusReader:
 
   @classmethod
   def _transform_sample(cls, audio_file, preprocess_fnc):
-    audio_data, samplerate = librosa.load(audio_file)
     with open('log/paths.txt', 'w') as f:
         f.write(os.path.join('/datasets/OpenSLR12/export/LibriSpeechPhones/', audio_file.split('/LibriSpeech/')[1]))
+    audio_data, samplerate = librosa.load(audio_file)
     audio_fragments = preprocess_fnc(audio_data, samplerate)
     audio_id = cls._extract_audio_id(audio_file)
 
@@ -166,15 +166,9 @@ class SpeechCorpusReader:
 
   @classmethod
   def _transform_and_store_sample(cls, audio_file, preprocess_fnc, transcript, out_directory):
-    try:
-        audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
-        print(audio_fragments)
-        np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
-    except Exception as err:
-        with open(os.path.join('log', str(time.time())), 'w') as f:
-            f.write(err.with_traceback())
-            f.write(err.__class__)
-            f.write(err.__cause__)
+    audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
+    print(audio_fragments)
+    np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
 
 
 
