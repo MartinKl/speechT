@@ -100,7 +100,7 @@ def iglob_recursive(directory, file_pattern):
 
   """
   for root, dir_names, file_names in os.walk(directory, followlinks=True):
-    files = filter(lambda fn: not os.path.islink(os.path.join(root, fn)), fnmatch.filter(file_names, file_pattern))
+    files = fnmatch.filter(file_names, file_pattern)
     for filename in files:
       yield os.path.join(root, filename)
 
@@ -231,6 +231,9 @@ class SpeechCorpusReader:
       os.makedirs(out_directory)
 
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
+    with open('inspect.txt') as f:
+        f.write(os.linesep.join(audio_files))
+    raise NotImplementedError
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
 
