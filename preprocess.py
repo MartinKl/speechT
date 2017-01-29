@@ -124,7 +124,7 @@ class SpeechCorpusReader:
     return self._transcript_dict_cache
 
   @staticmethod
-  def _get_transcript_entries(transcript_directory):
+  def _get_transcript_entries(transcript_dir):
     """
     Iterate over all transcript lines and yield splitted entries
 
@@ -134,6 +134,9 @@ class SpeechCorpusReader:
     Returns: Iterator for all entries in the form (id, sentence)
 
     """
+    transcript_directory = SpeechCorpusReader._fix_transcript_dir(transcript_dir)
+    if not os.path.exists(transcript_dir):
+        raise FileNotFoundError
     transcript_files = iglob_recursive(transcript_directory, '*.trans.txt')
     for transcript_file in transcript_files:
       with open(transcript_file, 'r') as f:
@@ -145,6 +148,11 @@ class SpeechCorpusReader:
           # 00-000000-0000 WORD1 WORD2 ...
           splitted = line.split(' ', 1)
           yield splitted
+
+  @staticmethod
+  def _fix_transcript_dir(directory):
+      print('fixing', directory)
+      return directory.replace('LibriSpeech', 'export/LibriSpeechPhones')
 
   def _build_transcript(self):
     """
@@ -224,7 +232,7 @@ class SpeechCorpusReader:
       os.makedirs(out_directory)
 
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
-    print('audio files:', audio_files, 'from', os.path.join(self._data_directory, directory))
+    print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
 
       transcript_dict = self._transcript_dict
