@@ -13,12 +13,16 @@
 # limitations under the License.
 # ==============================================================================
 
-APOSTROPHE = 26
-SPACE_ID = 27
+import pickle
 
-A_ASCII_CODE = ord('a')
+PHONES_FILE = 'phones.pkl'
 
-SIZE = 28
+with open(PHONES_FILE, 'rb') as f:
+  charset = [' '] + list(pickle.load(f))
+C2IX_DICT = {charset[i]: i for i in range(len(charset))}
+IX2C_DICT = {v: k for k, v in C2IX_DICT.items()}
+
+SIZE = len(charset)
 
 
 def letter_to_id(letter):
@@ -26,16 +30,12 @@ def letter_to_id(letter):
   Converts `letter` to vocabulary id
 
   Args:
-    letter: letter to convert, allowed is a-z, apostrophe and space
+    letter: letter to convert, allowed is a-z and space
 
   Returns: the vocabulary encoded letter
 
   """
-  if letter == ' ':
-    return SPACE_ID
-  if letter == '\'':
-    return APOSTROPHE
-  return ord(letter) - A_ASCII_CODE
+  return C2IX_DICT[letter]
 
 
 def id_to_letter(identifier):
@@ -48,11 +48,7 @@ def id_to_letter(identifier):
   Returns: the character letter
 
   """
-  if identifier == SPACE_ID:
-    return ' '
-  if identifier == APOSTROPHE:
-    return '\''
-  return chr(identifier + A_ASCII_CODE)
+  return IX2C_DICT[identifier]
 
 
 def sentence_to_ids(sentence):

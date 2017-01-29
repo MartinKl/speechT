@@ -134,9 +134,7 @@ class SpeechCorpusProvider:
       data_sets: a list of the datasets to download
     """
 
-    for data_set_type, data_set_name in data_sets:
-      remote_file = data_set_name + SpeechCorpusProvider.SET_FILE_EXTENSION
-      self._download_if_not_exists(remote_file)
+    raise NotImplementedError
 
   def _extract(self, data_sets=DATA_SETS):
     """
