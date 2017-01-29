@@ -23,8 +23,8 @@ class SpeechCorpusProvider:
   """
 
   TRAIN_DIR = 'data/'  # FIXME
-  DEV_DIR = 'dev_ph'
-  TEST_DIR = 'test_ph'
+  DEV_DIR = 'dev'
+  TEST_DIR = 'test'
 
   DEV_CLEAN_SET = 'dev-clean'
   TRAIN_CLEAN_100_SET = 'train-clean-100'
