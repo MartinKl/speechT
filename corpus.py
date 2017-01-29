@@ -91,7 +91,7 @@ class SpeechCorpusProvider:
       target_directory: the directory to store the files in
     """
 
-    raise NotImplementedError
+    raise NotImplementedError('{}->{}'.format(source, target_directory))
 
   def _is_ready(self, data_sets=DATA_SETS):
     """
@@ -118,7 +118,7 @@ class SpeechCorpusProvider:
       data_sets: a list of the datasets to download
     """
 
-    raise NotImplementedError
+    raise NotImplementedError(data_sets)
 
   def _extract(self, data_sets=DATA_SETS):
     """
