@@ -198,7 +198,7 @@ class SpeechCorpusReader:
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
-
+      print('does print work here?')
       transcript_dict = self._transcript_dict
 
       for audio_file in audio_files:
