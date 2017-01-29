@@ -156,7 +156,7 @@ class SpeechCorpusReader:
 
   @classmethod
   def _transform_sample(cls, audio_file, preprocess_fnc):
-    audio_data, samplerate = librosa.load(audio_file)
+    audio_data, samplerate = librosa.load(os.path.join('/datasets/OpenSLR12/LibriSpeech/', audio_file.split('/LibriSpeech/')[-1]))
     audio_fragments = preprocess_fnc(audio_data, samplerate)
     audio_id = cls._extract_audio_id(audio_file)
 
