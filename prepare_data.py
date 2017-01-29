@@ -164,7 +164,7 @@ class SpeechCorpusReader:
   @classmethod
   def _transform_and_store_sample(cls, audio_file, preprocess_fnc, transcript, out_directory):
     audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
-    print('saving to', os.path.join(out_directory, audio_id))
+    i = 1 / 0
     np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
 
 
@@ -198,15 +198,12 @@ class SpeechCorpusReader:
     audio_files = list(iglob_recursive(os.path.join(self._data_directory, directory), '*.flac'))
     print('audio files:', len(audio_files), 'from', os.path.join(self._data_directory, directory))
     with Pool(processes=multiprocessing.cpu_count()) as pool:
-      print('does print work here?')
       transcript_dict = self._transcript_dict
 
       for audio_file in audio_files:
         audio_id = self._extract_audio_id(audio_file)
-        print('Audio-id', audio_id)
         transcript_entry = transcript_dict[audio_id]
         transform_args = (audio_file, preprocess_fnc, transcript_entry, out_directory)
-        print('audio-file:', audio_file, 'f:', preprocess_fnc, 'outdir:', out_directory)
         pool.apply_async(SpeechCorpusReader._transform_and_store_sample, transform_args)
 
       pool.close()
