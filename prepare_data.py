@@ -166,7 +166,6 @@ class SpeechCorpusReader:
   @classmethod
   def _transform_and_store_sample(cls, audio_file, preprocess_fnc, transcript, out_directory):
     audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
-    print(audio_fragments)
     np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
 
 
