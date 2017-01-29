@@ -168,8 +168,11 @@ class SpeechCorpusReader:
         audio_id, audio_fragments = cls._transform_sample(audio_file, preprocess_fnc)
         np.savez(os.path.join(out_directory, audio_id), audio_fragments=audio_fragments, transcript=transcript)
     except Exception as err:
-        with open(os.path.join('log', str(time)), 'w') as f:
+        with open(os.path.join('log', str(time.time())), 'w') as f:
             f.write(err.with_traceback())
+            f.write(err.__class__)
+            f.write(err.__cause__)
+
 
 
 
