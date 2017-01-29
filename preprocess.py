@@ -219,12 +219,12 @@ class SpeechCorpusReader:
     """
     print('Called with', directory)
     out_directory = self._get_directory(preprocess_fnc, directory)
-
+    print('Outdir', out_directory)
     if not os.path.exists(out_directory):
       os.makedirs(out_directory)
 
     audio_files = list(iglob_recursive(self._data_directory + '/' + directory, '*.flac'))
-
+    print('audio files:', audio_files)
     with Pool(processes=multiprocessing.cpu_count()) as pool:
 
       transcript_dict = self._transcript_dict
