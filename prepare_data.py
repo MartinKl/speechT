@@ -203,8 +203,10 @@ class SpeechCorpusReader:
 
       for audio_file in audio_files:
         audio_id = self._extract_audio_id(audio_file)
+        print('Audio-id', audio_id)
         transcript_entry = transcript_dict[audio_id]
         transform_args = (audio_file, preprocess_fnc, transcript_entry, out_directory)
+        print('audio-file:', audio_file, 'f:', preprocess_fnc, 'outdir:', out_directory)
         pool.apply_async(SpeechCorpusReader._transform_and_store_sample, transform_args)
 
       pool.close()
