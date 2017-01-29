@@ -98,7 +98,7 @@ def iglob_recursive(directory, file_pattern):
   Returns: iterator for found files
 
   """
-  for root, dir_names, file_names in os.walk(directory):
+  for root, dir_names, file_names in os.walk(directory, followlinks=True):
     for filename in fnmatch.filter(file_names, file_pattern):
       yield os.path.join(root, filename)
 
