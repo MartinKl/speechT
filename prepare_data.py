@@ -123,7 +123,6 @@ class SpeechCorpusReader:
     transcript_files = iglob_recursive(transcript_directory, '*.trans.txt')
     for transcript_file in transcript_files:
       with open(transcript_file, 'r') as f:
-        print('Reading transcript from', transcript_file)
         for line in f:
           # Strip included new line symbol
           line = line.rstrip('\n')

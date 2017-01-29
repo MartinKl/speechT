@@ -61,7 +61,7 @@ def sentence_to_ids(sentence):
   Returns: list of ints (encoded characters)
 
   """
-  return [letter_to_id(letter) for letter in sentence.lower()]
+  return [letter_to_id(letter) for letter in sentence]
 
 
 def ids_to_sentence(identifiers):
