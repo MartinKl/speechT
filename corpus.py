@@ -22,9 +22,9 @@ class SpeechCorpusProvider:
   Ensures the availability and downloads the speech corpus if necessary
   """
 
-  TRAIN_DIR = 'train'
-  DEV_DIR = 'dev'
-  TEST_DIR = 'test'
+  TRAIN_DIR = 'train_ph'
+  DEV_DIR = 'dev_ph'
+  TEST_DIR = 'test_ph'
 
   DEV_CLEAN_SET = 'dev-clean'
   TRAIN_CLEAN_100_SET = 'train-clean-100'
@@ -39,9 +39,6 @@ class SpeechCorpusProvider:
     (TEST_DIR, TEST_CLEAN_SET)
   }
 
-  BASE_URL = 'http://www.openslr.org/resources/12/'
-  SET_FILE_EXTENSION = '.tar.gz'
-  TAR_ROOT = 'LibriSpeech/'
 
   def __init__(self, data_directory):
     """
@@ -81,11 +78,7 @@ class SpeechCorpusProvider:
     Returns: path to downloaded file
     """
 
-    path = os.path.join(self._data_directory, remote_file_name)
-    if not os.path.exists(path):
-      print('Downloading {}...'.format(remote_file_name))
-      urllib.request.urlretrieve(SpeechCorpusProvider.BASE_URL + remote_file_name, path)
-    return path
+    raise NotImplementedError
 
   @staticmethod
   def _extract_from_to(tar_file_name, source, target_directory):
@@ -98,16 +91,7 @@ class SpeechCorpusProvider:
       target_directory: the directory to store the files in
     """
 
-    print('Extracting {}...'.format(tar_file_name))
-    with tarfile.open(tar_file_name, 'r:gz') as tar:
-      source_members = [
-        tarinfo for tarinfo in tar.getmembers()
-        if tarinfo.name.startswith(SpeechCorpusProvider.TAR_ROOT + source)
-        ]
-      for member in source_members:
-        # Extract without prefix
-        member.name = member.name.replace(SpeechCorpusProvider.TAR_ROOT, '')
-      tar.extractall(target_directory, source_members)
+    raise NotImplementedError
 
   def _is_ready(self, data_sets=DATA_SETS):
     """
@@ -144,11 +128,7 @@ class SpeechCorpusProvider:
       data_sets: a list of the datasets to extract the files from
     """
 
-    for data_set_type, data_set_name in data_sets:
-      local_file = os.path.join(
-        self._data_directory, data_set_name + SpeechCorpusProvider.SET_FILE_EXTENSION)
-      target_directory = os.path.join(self._data_directory, data_set_type)
-      self._extract_from_to(local_file, data_set_name, target_directory)
+    raise NotImplementedError
 
   def ensure_availability(self, test_only=False):
     """

@@ -200,7 +200,7 @@ class SpeechCorpusReader:
       yield audio_id, audio_fragments, transcript_dict[audio_id]
 
   def _get_directory(self, feature_type, sub_directory):
-    preprocess_directory = 'preprocessed'
+    preprocess_directory = 'preprocessed_ph'
     if feature_type == calc_power_spectrogram or feature_type == 'power':
       preprocess_directory += '-power'
 
@@ -298,8 +298,8 @@ if __name__ == '__main__':
   if not(args.all or args.train or args.test or args.dev):
     print('You must specify the data set to preprocess. Use --help')
 
-  corpus = corpus.SpeechCorpusProvider(args.data_directory)
-  corpus.ensure_availability()
+  corp = corpus.SpeechCorpusProvider(args.data_directory)
+  corp.ensure_availability()
   corpus_reader = SpeechCorpusReader(args.data_directory)
 
   if args.all or args.train:
