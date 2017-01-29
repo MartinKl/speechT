@@ -123,6 +123,7 @@ class SpeechCorpusReader:
     transcript_files = iglob_recursive(transcript_directory, '*.trans.txt')
     for transcript_file in transcript_files:
       with open(transcript_file, 'r') as f:
+        print('Reading transcript from', transcript_file)
         for line in f:
           # Strip included new line symbol
           line = line.rstrip('\n')
@@ -142,7 +143,6 @@ class SpeechCorpusReader:
     # Create the transcript dictionary
     transcript_dict = dict()
     for splitted in self._get_transcript_entries(self._data_directory):
-      print('transcript call with', splitted[1])
       transcript_dict[splitted[0]] = vocabulary.sentence_to_ids(splitted[1])
 
     return transcript_dict
