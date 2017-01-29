@@ -22,7 +22,7 @@ class SpeechCorpusProvider:
   Ensures the availability and downloads the speech corpus if necessary
   """
 
-  TRAIN_DIR = 'data/'  # FIXME
+  TRAIN_DIR = 'train'  # FIXME
   DEV_DIR = 'dev'
   TEST_DIR = 'test'
 

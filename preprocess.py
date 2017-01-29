@@ -304,12 +304,12 @@ if __name__ == '__main__':
 
   if args.all or args.train:
     print('Preprocessing training data')
-    corpus_reader.store_samples('data/train', args.preprocess_fnc)
+    corpus_reader.store_samples('train', args.preprocess_fnc)
 
   if args.all or args.test:
     print('Preprocessing test data')
-    corpus_reader.store_samples('data/test', args.preprocess_fnc)
+    corpus_reader.store_samples('test', args.preprocess_fnc)
 
   if args.all or args.dev:
     print('Preprocessing development data')
-    corpus_reader.store_samples('data/dev', args.preprocess_fnc)
+    corpus_reader.store_samples('dev', args.preprocess_fnc)
